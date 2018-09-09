@@ -1,0 +1,59 @@
+<div class="container">
+
+  <section id="main">
+
+    {{#if articles}}
+
+    <img class="img-responsive materialboxed" width="350" src="./assets/wired.jpg">
+
+    <div class="row">
+
+      {{#each articles}}
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h3>
+
+              <button class="btn save" data-id={{this._id}}>
+
+                <div class="d-flex justify-content-between">
+
+                  <div>
+
+                    <i class="fas fa-eye"></i> {{this.title}}
+
+                  </div>
+
+                 
+
+                </div>
+
+              </button>
+
+            </h3>
+
+          </div>
+
+          <div class="collapse">
+
+            <div class="card-body">
+
+              {{this.body}}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      {{/each}}
+
+    </div>
+
+    {{/if}}
+
+  </section>
+
+</div>

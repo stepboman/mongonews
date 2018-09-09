@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>News Scraper</title>
+
+  
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+.landing {
+
+  margin-left: 125px;
+
+}
+
+.brand-logo{
+
+  margin-left: 25px;
+
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+    <div class="container">
+
+         <nav>
+
+    <div class="nav-wrapper">
+
+      <a href="/" class="brand-logo">Atlantic</a>
+
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+      <ul class="right hide-on-med-and-down">
+
+        <li><a class="waves-effect waves-light" href="/">Home</a></li>
+
+        <li><a class="waves-effect waves-light" href="/save">Saved Articles</a></li>
+
+        <li><a class="waves-effect waves-light" href="/scrape" id="scrape">Scrape Latest News</a></li>
+
+      </ul>
+
+    </div>
+
+  </nav>
+
+      
+
+      <ul class="side-nav" id="mobile-demo">
+
+        
+
+        <li><a href="/">Home</a></li>
+
+        <li><a href="/save">Saved Articles</a></li>
+
+        <li><a href="/scrape">Scrape Latest News</a></li>
+
+      </ul>
+
+  <br><br>
+
+
+
+
+
+
+
+
+
+    {{#if mainPage}}
+
+            <div class="main-bg"></div>
+
+            <div class="main-strip bg-secondary">
+
+            <h2 class="center">Scrape and Read the latest news from</h2>
+
+            <img class="img-responsive materialboxed" width="350" src="./assets/wired.jpg">
+
+            <img class="responsive-img landing" src="./assets/shocked-reader.jpg" width="650">
+
+        </div>
+
+        {{else}}
+
+            <div class="main-bg scrape"></div>
+
+            <div class="main-strip bg-secondary">
+
+                <strong><h2 class="center">{{title}}</h2></strong>
+
+            </div>
+
+            
+
+        {{/if}}
+
+        
+
+    </header>
+
+
+
+        {{{body}}}
+
+
+
+
+
+
+
+<footer class="page-footer">
+
+          <div class="container">
+
+            <div class="row">
+
+              <div class="col l6 s12">
+
+                <h5 class="white-text">Wired News Scraper</h5>
+
+                <p class="grey-text text-lighten-4">You can scrape Wired and save stories to read later.</p>
+
+              </div>
+
+              <div class="col l4 offset-l2 s12">
+
+                <h5 class="white-text">Links</h5>
+
+                <ul>
+
+                  <li><a class="grey-text text-lighten-3" href="/">Home</a></li>
+
+                  <li><a class="grey-text text-lighten-3" href="/save">Saved Articles</a></li>
+
+                  <li><a class="grey-text text-lighten-3" href="/scrape">Scrape Latest News</a></li>
+
+                  
+
+                </ul>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="footer-copyright">
+
+            <div class="container">
+
+            © 2018 Joshua Silverman
+
+            <a class="grey-text text-lighten-4 right" href="https://www.wired.com/" target="_blank">Wired Home Page</a>
+
+            </div>
+
+          </div>
+
+        </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+ <!-- Compiled and minified JavaScript -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+
+
+ <script>
+
+
+
+//start materialize JQuery
+
+   $(document).ready(function(){
+
+    $('#modal1').modal();
+
+    $('.materialboxed').materialbox();
+
+    $(".button-collapse").sideNav();
+
+
+
+//save button event handler
+
+    $(".save").on("click", function() {
+
+    var thisId = $(this).attr("data-id");
+
+    $.ajax({
+
+        method: "PUT",
+
+        url: "/save/" + thisId
+
+    }).done(function(data) {
+
+        window.location = "/save"
+
+    })
+
+});
+
+
+
+//delete saved articles
+
+    $(".delete").on("click", function(){
+
+      var thisId = $(this).attr("id");
+
+       $.ajax({
+
+        method: "DELETE",
+
+        url: "/delete/article/" + thisId
+
+    }).done(function(data) {
+
+        window.location = "/save"
+
+    })
+
+
+
+    });
+
+
+
+
+
+    //Handle Save Comment button
+
+$(".saveComment").on("click", function() {
+
+    var thisId = $(this).attr("data-id");
+
+    if (!$("#textarea1" + thisId).val()) {
+
+        alert("please enter a note to save")
+
+    }else {
+
+      $.ajax({
+
+            method: "POST",
+
+            url: "/comments/save/" + thisId,
+
+            data: {
+
+              text: $("#textarea1" + thisId).val()
+
+            }
+
+          }).done(function(data) {
+
+              // Log the response
+
+              console.log(data);
+
+              // Empty the notes section
+
+              $("#textarea1" + thisId).val("");
+
+              $(".#modal1").modal("hide");
+
+              window.location = "/save"
+
+          });
+
+    }
+
+});
+
+
+
+
+
+
+
+//delete comments
+
+    
+
+
+
+    });
+
+
+
+ </script>
+
+          
+
+</body>
+
+</html>
